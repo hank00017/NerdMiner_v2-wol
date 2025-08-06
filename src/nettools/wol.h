@@ -14,6 +14,8 @@ struct wolDevice {
 };
 
 
-void sendWOLPacket(const byte* macAddress);
-
+void sendWOLPacket(const byte* macAddress); // Function to send the WOL packet
+void startWOLServer(); // Function to start the WOL server
+void handleRoot(); // Handles the HTTP request for the homepage and displays the WOL control page
+void handleWOLClient(); // Function to handle incoming http requests
 #endif // WOL_H

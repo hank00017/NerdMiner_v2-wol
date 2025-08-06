@@ -14,6 +14,7 @@
 #include "drivers/displays/display.h"
 #include "drivers/storage/SDCard.h"
 #include "timeconst.h"
+#include "nettools/wol.h"
 
 #ifdef TOUCH_ENABLE
 #include "TouchHandler.h"
@@ -150,6 +151,11 @@ void setup()
 
   /******** MONITOR SETUP *****/
   setup_monitor();
+
+
+  /******** start wol server *****/
+  startWOLServer();
+  
 }
 
 void app_error_fault_handler(void *arg) {
@@ -164,6 +170,8 @@ void app_error_fault_handler(void *arg) {
 }
 
 void loop() {
+  handleWOLClient(); // Handle incoming http requests
+
   // keep watching the push buttons:
   #ifdef PIN_BUTTON_1
     button1.tick();

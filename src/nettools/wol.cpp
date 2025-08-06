@@ -31,3 +31,18 @@ void sendWOLPacket(const byte* macAddress) {
   udp.endPacket();
 }
 
+//create a webpage 
+void handleRoot() {
+    String html = "<html><body><h1>WOL</h1>";
+    server.send(200, "text/html", html);
+}
+
+void startWOLServer() {
+  udp.begin(wolPort);
+  server.on("/", handleRoot);
+  server.begin();
+}
+
+void handleWOLClient() {
+  server.handleClient(); // Handle incoming requests
+}
