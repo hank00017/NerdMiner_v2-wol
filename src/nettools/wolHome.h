@@ -1,8 +1,8 @@
-#ifndef WOL_HTML_H
-#define WOL_HTML_H
+#ifndef WOL_HOME_H
+#define WOL_HOME_H
 
 
-const char* WOL_HTML_PAGE = R"(
+const char* WOL_HOME_PAGE = R"(
 <!DOCTYPE html>
 <html>
 <head>

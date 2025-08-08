@@ -20,6 +20,35 @@ body {
     box-shadow: 0 13px 10px rgba(0, 0, 0, 0.51);
 }
 
+label {
+    display: block;
+    margin-top: 16px;
+    font-weight: 600;
+    font-size: 14px;
+}
+
+input {
+    width: 100%;
+    padding: 12px 14px;
+    margin-top: 6px;
+    border: 1px solid #c9c9c9;
+    border-radius: 10px;
+    font-size: 15px;
+    box-sizing: border-box;
+}
+
+input:focus {
+    outline: none;
+    border-color: #1aa420;
+    box-shadow: 0 0 0 2px rgba(26,164,32,.2);
+}
+
+.tip {
+    font-size: 15px;
+    color: #777;
+    margin-top: 4px;
+}
+
 h1 {
     color: #1e84a4;
     text-align: center;
@@ -43,6 +72,7 @@ button {
     cursor: pointer;
     margin-bottom: 24px;            
 }
+    
 
 button:hover {
     background-color: #45a049;

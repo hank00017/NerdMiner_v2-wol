@@ -3,8 +3,9 @@
 #include <ESP32Ping.h>
 #include <HTTPClient.h>
 #include "wol.h"
-#include "wolHTML.h"
 #include "wolCSS.h"
+#include "wolHOME.h"
+#include "wolSetup.h"
 
 
 // List of WOL devices: {"Name", "MAC", "Broadcast IP"}
@@ -48,7 +49,7 @@ void handleCSS() {
 
 //create a webpage 
 void handleRoot() {
-    String html = String(WOL_HTML_PAGE);
+    String html = String(WOL_HOME_PAGE);
 
     // Add CSS style to the HTML
     String cssStyle = "<style>";
@@ -70,7 +71,8 @@ void handleRoot() {
 
     // If no devices are configured, show a first-time setup message
     if (deviceCount == 0) {
-        deviceButtons = "<div style='text-align:center;color:#666;'>No devices configured</div>";
+        handleSetup(); // Redirect to setup page
+        return;
     }
 
     // Replace placeholders
@@ -79,16 +81,32 @@ void handleRoot() {
 }
 
 
+void handleSetup() { 
+  String html = String(WOL_SETUP_PAGE);
+  // Add CSS style to the HTML
+  String cssStyle = "<style>";
+  cssStyle += WOL_CSS;
+  cssStyle += "</style>";
+  html.replace("</head>", cssStyle + "</head>");
+  server.send(200,"text/html", html); 
+}
 
-
+// Features to be added
+/*
 
 bool isOnline(const String& ip) {
     return Ping.ping(ip.c_str());
 }
 
-void handlesStatus() {
+void handleStatus() {
     
 }
+
+*/
+
+
+
+
 
 
 void startWOLServer() {
