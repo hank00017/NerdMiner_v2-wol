@@ -4,19 +4,24 @@
 #include <HTTPClient.h>
 #include "wol.h"
 #include "wolHTML.h"
+#include "wolCSS.h"
 
 
 // List of WOL devices: {"Name", "MAC", "Broadcast IP"}
 wolDevice devices[] = {
-  {"Device1", "AA:BB:CC:DD:EE:FF", "192.168.1.255"},
-  {"Device2", "AA:BB:CC:DD:EE:FF", "192.168.1.255"},
-  {"Device3", "AA:BB:CC:DD:EE:FF", "192.168.1.255"},
-  {"Device4", "AA:BB:CC:DD:EE:FF", "192.168.1.255"},
+  //{"Device1", "0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF", "192.168.1.255"},
+  //{"Device2", "0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF", "192.168.1.255"},
+  //{"Device3", "0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF", "192.168.1.255"},
+  //{"Device4", "0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF", "192.168.1.255"},
 };
+
+// calculate the number of devices
+const int deviceCount = sizeof(devices) / sizeof(devices[0]);
 
 // UDP instance for sending WOL packets
 WiFiUDP udp;
 WebServer server(80);
+
 
 void sendWOLPacket(const byte* macAddress) {
   byte magicPacket[102];
@@ -35,18 +40,26 @@ void sendWOLPacket(const byte* macAddress) {
   udp.endPacket();
 }
 
-// calculate the number of devices
-const int deviceCount = sizeof(devices) / sizeof(devices[0]);
+
+
+void handleCSS() {
+    server.send(200, "text/css", WOL_CSS);
+}
 
 //create a webpage 
 void handleRoot() {
     String html = String(WOL_HTML_PAGE);
 
-        // generate device buttons
+    // Add CSS style to the HTML
+    String cssStyle = "<style>";
+    cssStyle += WOL_CSS;
+    cssStyle += "</style>";
+    html.replace("</head>", cssStyle + "</head>");
+
+    // generate device buttons
     String deviceButtons = "";
 
     for (int i = 0; i < deviceCount; i++) {
-        
         deviceButtons += "<div style='margin: 15px 0;'>";
         deviceButtons += "<button style=\"width: 100%; height: 75px; cursor: pointer;\" "
                  "onclick=\"window.location.href='/wake?device=" + String(i) + "'\">"
@@ -55,7 +68,7 @@ void handleRoot() {
         deviceButtons += "</div>";
     }
 
-    // If no devices are configured, show a message
+    // If no devices are configured, show a first-time setup message
     if (deviceCount == 0) {
         deviceButtons = "<div style='text-align:center;color:#666;'>No devices configured</div>";
     }
@@ -65,9 +78,23 @@ void handleRoot() {
     server.send(200, "text/html", html);
 }
 
+
+
+
+
+bool isOnline(const String& ip) {
+    return Ping.ping(ip.c_str());
+}
+
+void handlesStatus() {
+    
+}
+
+
 void startWOLServer() {
   udp.begin(wolPort);
   server.on("/", handleRoot);
+  server.on("/style.css", handleCSS);  // 添加 CSS 路由
   server.begin();
 }
 
