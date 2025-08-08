@@ -35,14 +35,14 @@ void sendWOLPacket(const byte* macAddress) {
   udp.endPacket();
 }
 
-// 計算設備數量
+// calculate the number of devices
 const int deviceCount = sizeof(devices) / sizeof(devices[0]);
 
 //create a webpage 
 void handleRoot() {
     String html = String(WOL_HTML_PAGE);
 
-        // 生成設備按鈕
+        // generate device buttons
     String deviceButtons = "";
 
     for (int i = 0; i < deviceCount; i++) {
@@ -54,13 +54,13 @@ void handleRoot() {
                  "</button>";
         deviceButtons += "</div>";
     }
-    
-    // 如果沒有設備，顯示提示訊息
+
+    // If no devices are configured, show a message
     if (deviceCount == 0) {
         deviceButtons = "<div style='text-align:center;color:#666;'>No devices configured</div>";
     }
 
-    // 替換佔位符
+    // Replace placeholders
     html.replace("{{DEVICE_BUTTONS}}", deviceButtons);
     server.send(200, "text/html", html);
 }

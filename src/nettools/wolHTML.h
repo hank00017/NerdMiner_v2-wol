@@ -57,7 +57,8 @@ const char* WOL_HTML_PAGE = R"(
     <div class="container">
         <h1>Wake-on-LAN Controller</h1>
         <div class="device-list">
-            {{DEVICE_BUTTONS}}
+            {{DEVICE_BUTTONS}} 
+            <!-- This will be replaced with device buttons -->
         </div>
       
     </div>
